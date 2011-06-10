@@ -33,6 +33,6 @@ var s = net.Server(function(socket) {
 })
 
 var port = process.env.PORT || 3000;
-server.listen(port, function() {
+s.listen(port, function() {
   console.log('server running on port ' + port)
 });
