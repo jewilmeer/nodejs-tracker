@@ -12,32 +12,33 @@
 //   console.log('server running on port ' + port)
 // });
 
-var net = require('net')
+var http = require('http') 
+var io   = require('socket.io')
 
-var sockets = []
-
-var s = net.Server(function(socket) {
-  sockets.push( socket )
-  
-  socket.on('connect', function() {
-    socket.write("Welcome to this simple server!\n")
-  })
-  
-  socket.on('data', function(data) {
-    for( var i=0; i < sockets.length; i++ ) {
-      if(sockets[i] == socket) continue;
-      sockets[i].write(data);
-    }
-  })
-  
-  socket.on('end', function() {
-    console.log("We\'ve got a quitter");
-    var i = sockets.indexOf( socket );
-    sockets.splice(i, 1);
-  })
-})
+var server = http.createServer(function(req, res) {
+    // your normal server code
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.end('<h1>Hello world</h1>');
+});
 
 var port = process.env.PORT || 3000;
-s.listen(port, function() {
+server.listen(port, function() {
   console.log('server running on port ' + port)
 });
+
+// socket.io, I choose you
+var socket  = io.listen(server)
+var clients = []
+
+socket.on('connection', function(client) {
+  // new client is here!
+  client.on('message', function(msg) { 
+    console.log('messga!', msg);
+    
+    client.broadcast({ message: {session_id: client.sessionId, message: msg }})
+  })
+  client.on('disconnect', function(){ 
+    console.log("bye bye quiter!") 
+  })
+});
+
