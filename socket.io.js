@@ -19,8 +19,13 @@ var sockets = []
 var s = net.Server(function(socket) {
   sockets.push( socket )
   
+  socket.on('connect', function() {
+    socket.write("Welcome to this simple server!\n")
+  })
+  
   socket.on('data', function(data) {
     for( var i=0; i < sockets.length; i++ ) {
+      if(sockets[i] == socket) continue;
       sockets[i].write(data);
     }
   })
