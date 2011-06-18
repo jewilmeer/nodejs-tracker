@@ -19,7 +19,7 @@ var server = http.createServer(function(req, res) {
     // your normal server code
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.write('<h1>Hello world</h1>')
-    res.end('enter chat <a href="index.html">here</a>');
+    res.end('enter chat <a href="chat.html">here</a>');
 });
 
 var port = process.env.PORT || 3000;
