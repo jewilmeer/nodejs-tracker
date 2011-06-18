@@ -25,11 +25,12 @@
   
   <input type="text" name="message" />
 
-  <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+  <script src="socket.io/socket.io.js"></script>
+  <!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> -->
   <!-- <script src="http://node-tracker.herokuapp.com/socket.io/socket.io.js"></script> -->
   <script> 
     $(function() {
-      window.socket = new io.Socket('localhost', {port: 3000}); 
+      window.socket = new io.Socket(document.location.hostname, {port: document.location.port}); 
       // window.socket = new io.Socket('http://node-tracker.herokuapp.com', {port: 80}); 
       socket.connect();
       socket.on('connect', function() {
